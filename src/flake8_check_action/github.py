@@ -27,12 +27,12 @@ class GitHubCheckRun(object):
         self.session.headers['User-Agent'] = f'flake8-check-action/{__version__}'
 
         check_run = {
-            'name': 'Flake8 checks',
+            'name': 'Flake8 violations',
             'head_sha': self.sha,
             'status': 'in_progress',
             'started_at': datetime.utcnow().isoformat(timespec='seconds') + 'Z',
             'output': {
-                'title': 'Flake8 checks',
+                'title': 'Flake8 violations',
                 'summary': '',
             }
         }
@@ -80,7 +80,7 @@ class GitHubCheckRun(object):
     def complete(self, formatter: GitHubCheckFormatter, summary: str):
         check_data = {
             'output': {
-                'title': 'Flake8 checks',
+                'title': 'Flake8 violations',
                 'summary': summary,
                 'annotations': self._format_annotations(formatter),
             },

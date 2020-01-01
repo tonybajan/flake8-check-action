@@ -2,7 +2,7 @@ on: push
 name: Push
 jobs:
   lint:
-    name: Lint with Flake8
+    name: Lint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

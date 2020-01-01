@@ -11,14 +11,14 @@ A GitHub action to run [Flake8](https://flake8.readthedocs.io/en/latest/) agains
 
 ## Configuration
 
-Create or adapt your workflow file in `.github/workflows/` 
+Create or adapt your workflow file in `.github/workflows/` to run `tonybajan/flake8-check-action` after `actions/checkout`.
 
 ```yaml
 on: push
 name: Push
 jobs:
   lint:
-    name: Lint with Flake8
+    name: Lint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -28,3 +28,13 @@ jobs:
         maxlinelength: 100
         repotoken: ${{ secrets.GITHUB_TOKEN }}
 ```
+
+### Parameters
+
+| Parameter name  | Required  |  Description |
+|---------------|:---:|---|
+| `repotoken`     | ✓ |  The token to use to report GitHub Checks. Should be set to `${{ secrets.GITHUB_TOKEN }}`, which is automatically set by GitHub Actions.  |
+| `path`          |   |  The path to check. Defaults to the whole repo. |
+| `select`        |   |  A comma separated list of violations (or violation prefixes) that should fail the build. Defaults to `F`. |
+| `ignore`        |   | A comma separated list of violations (or violation prefixes) to ignore. Nothing is ignored by default. |
+| `maxlinelength` |   | The maximum line length for pycodestyle violation E501. Defaults to 79. |
