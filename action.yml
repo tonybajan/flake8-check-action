@@ -1,0 +1,25 @@
+name: 'Flake8 check action'
+description: 'Configurably use GitHub Actions to run flake8 as a Check'
+author: tonybajan
+runs:
+  using: docker
+  image: Dockerfile
+branding:
+  icon: check-circle
+  color: green
+inputs:
+  path:
+    description: 'The path to check. Checks $GITHUB_WORKSPACE if not given'
+    required: false
+  select:
+    description: 'A comma separated list of violations (or violation prefixes) to include.'
+    required: false
+    default: 'F'
+  ignore:
+    description: 'A comma separated list of violations (or violation prefixes) to ignore.'
+    required: false
+    default: ''
+  maxlinelength:
+    description: 'The maximum line length for pycodestyle violation E501.'
+    required: false
+    default: '79'
