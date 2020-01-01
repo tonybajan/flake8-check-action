@@ -1,0 +1,13 @@
+on: push
+name: Push
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Lint with self
+      uses: tonybajan/flake8-check-action@master
+      with:
+        select: E,F,B,G0
+        maxlinelength: 100
