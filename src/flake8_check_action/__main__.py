@@ -50,3 +50,4 @@ def run_check() -> None:
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
     run_check()
+    import pdb; pdb.set_trace()
