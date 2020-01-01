@@ -42,8 +42,6 @@ def run_check() -> None:
         summary = '*No violations*'
     else:
         summary = '*Violations were found*\n'
-        for stat in report.get_statistics(''):
-            summary += f'* {stat}\n'
 
     check_run.complete(formatter, summary=summary)
 

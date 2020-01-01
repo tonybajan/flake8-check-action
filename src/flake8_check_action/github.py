@@ -87,5 +87,5 @@ class GitHubCheckRun(object):
         logger.info('Update check run: %s', check_data)
         if self.token:
             response = self.session.patch(self.check_run_url, data=json.dumps(check_data))
-            logger.info('GitHub Response: %s', response.content)
+            logger.info('GitHub Response: %s' % response.content)
             response.raise_for_status()
