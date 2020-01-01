@@ -4,9 +4,9 @@ A GitHub action to run [Flake8](https://flake8.readthedocs.io/en/latest/) agains
 
 ## Features
 
-* Configurable violations to fail on from the workflow YAML file
-* Reports failures using the GitHub Checks API, so you get rich annotations in your pull request
-* Plugins included: as well as reporting violations from [pycodestyle](https://pycodestyle.readthedocs.io/en/latest/) and [pyflakes](https://github.com/PyCQA/pyflakes), also optionally run the checks from [flake8-breakpoint](https://github.com/afonasev/flake8-breakpoint), [flake8-bugbear](https://github.com/PyCQA/flake8-bugbear) and [flake8-logging-format](https://github.com/globality-corp/flake8-logging-format)
+* Configure path and relevant violations from the workflow YAML file
+* Reports failures using the GitHub Checks API for rich annotations in your pull request
+* Plugins included: as well as reporting violations from [pycodestyle](https://pycodestyle.readthedocs.io/en/latest/) and [pyflakes](https://github.com/PyCQA/pyflakes), also optionally run the checks from [flake8-breakpoint](https://github.com/afonasev/flake8-breakpoint), [flake8-bugbear](https://github.com/PyCQA/flake8-bugbear) and [flake8-logging-format](https://github.com/globality-corp/flake8-logging-format). Enable them by selecting their error prefixes.
 
 
 ## Configuration
