@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def run_check() -> None:
     default_select = 'F'
-    github_token = os.getenv('GITHUB_TOKEN')
+    github_token = os.getenv('INPUT_REPOTOKEN')
     if not github_token:
         logging.basicConfig(level=logging.INFO)
         logger.info('No GitHub token found, check will not be reported')

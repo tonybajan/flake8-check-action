@@ -2,7 +2,7 @@ on: push
 name: Push
 jobs:
   lint:
-    name: Lint
+    name: Lint with Flake8
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -11,3 +11,4 @@ jobs:
       with:
         select: E,F,B,G0
         maxlinelength: 100
+        repotoken: ${{ secrets.GITHUB_TOKEN }}

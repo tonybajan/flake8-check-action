@@ -57,7 +57,6 @@ class GitHubCheckRun(object):
     def send_outstanding_annotations(self, formatter: GitHubCheckFormatter):
         check_data = {
             'output': {
-                'summary': 'No violations' if not formatter.violations_seen else 'Violations found',
                 'annotations': self._format_annotations(formatter)
             }
         }
