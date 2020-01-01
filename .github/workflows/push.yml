@@ -10,5 +10,5 @@ jobs:
       uses: tonybajan/flake8-check-action@master
       with:
         select: E,F,B,G0
-        maxlinelength: 100
+        maxlinelength: 79
         repotoken: ${{ secrets.GITHUB_TOKEN }}
