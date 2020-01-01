@@ -28,17 +28,16 @@ class GitHubCheckRun(object):
             'name': 'Flake8 checks',
             'head_sha': self.sha,
             'status': 'in_progress',
-            'started_at': datetime.utcnow().isoformat()
+            'started_at': datetime.utcnow().isoformat(),
         }
 
         url = f'https://api.github.com/repos/{self.repo}/check-runs'
+        logger.info('Create check run: %s', check_run)
         if self.token:
             response = self.session.post(url, data=json.dumps(check_run))
             response.raise_for_status()
             response_data = response.json()
             self.check_run_url = f'{url}/{response_data["id"]}'
-        else:
-            logger.info('Create check run: %s', check_run)
 
     def _format_annotations(self, formatter):
         annotations = []
@@ -61,10 +60,9 @@ class GitHubCheckRun(object):
             }
         }
 
+        logger.info('Update check run: %s', check_data)
         if self.token:
             self.session.patch(self.check_run_url, data=json.dumps(check_data))
-        else:
-            logger.info('Update check run: %s', check_data)
 
     def complete(self, formatter: GitHubCheckFormatter, summary: str):
         check_data = {
@@ -76,8 +74,6 @@ class GitHubCheckRun(object):
             }
         }
 
+        logger.info('Update check run: %s', check_data)
         if self.token:
             self.session.patch(self.check_run_url, data=json.dumps(check_data))
-        else:
-            logger.info('Complete check run: %s', check_data)
-

@@ -13,8 +13,7 @@ def run_check() -> None:
     default_select = 'F'
     github_token = os.getenv('INPUT_REPOTOKEN')
     if not github_token:
-        logging.basicConfig(level=logging.INFO)
-        logger.info('No GitHub token found, check will not be reported')
+        logger.warning('No GitHub token found, check will not be reported')
 
     sha = os.getenv('GITHUB_SHA')
     path = os.getenv('INPUT_PATH') or os.getenv('GITHUB_WORKSPACE') or '.'
@@ -50,4 +49,5 @@ def run_check() -> None:
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO)
     run_check()
