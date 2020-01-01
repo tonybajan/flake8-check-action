@@ -37,7 +37,7 @@ def run_check() -> None:
     )
     formatter = style_guide._application.formatter
     formatter.check_run = check_run
-    report = style_guide.check_files(paths=[path])
+    style_guide.check_files(paths=[path])
 
     if not formatter.violations_seen:
         summary = '*No violations*'
