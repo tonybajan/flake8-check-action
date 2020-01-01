@@ -57,6 +57,7 @@ class GitHubCheckRun(object):
                 'message': violation.text,
                 'title': violation.code,
             })
+        return annotations
 
     def send_outstanding_annotations(self, formatter: GitHubCheckFormatter):
         check_data = {
@@ -68,21 +69,23 @@ class GitHubCheckRun(object):
         logger.info('Update check run: %s', check_data)
         if self.token:
             response = self.session.patch(self.check_run_url, data=json.dumps(check_data))
-            response = logger.info('GitHub Response: %s', response.content)
+            logger.info('GitHub Response: %s', response.content)
             response.raise_for_status()
 
     def complete(self, formatter: GitHubCheckFormatter, summary: str):
         check_data = {
             'output': {
+                'title': 'Flake8 checks',
                 'summary': summary,
                 'annotations': self._format_annotations(formatter),
-                'completed_at': datetime.utcnow().isoformat(timespec='seconds') + 'Z',
-                'conclusion': 'failure' if formatter.violations_seen else 'success'
-            }
+            },
+            'status': 'completed',
+            'completed_at': datetime.utcnow().isoformat(timespec='seconds') + 'Z',
+            'conclusion': 'failure' if formatter.violations_seen else 'success',
         }
 
         logger.info('Update check run: %s', check_data)
         if self.token:
             response = self.session.patch(self.check_run_url, data=json.dumps(check_data))
-            response = logger.info('GitHub Response: %s', response.content)
+            logger.info('GitHub Response: %s', response.content)
             response.raise_for_status()
