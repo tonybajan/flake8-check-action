@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 
 from flake8.api.legacy import get_style_guide
 from flake8.utils import parse_comma_separated_list
@@ -13,11 +14,15 @@ def run_check() -> None:
     default_select = 'F'
     github_token = os.getenv('INPUT_REPOTOKEN')
     if not github_token:
-        logger.warning('No GitHub token found, check will not be reported')
+        print(
+            'No GitHub token found. Set repotoken to ${{ secrets.GITHUB_TOKEN }} in your workflow',
+            file=sys.stderr
+        )
+        sys.exit(1)
 
     sha = os.getenv('GITHUB_SHA')
     workspace = os.getenv('GITHUB_WORKSPACE')
-    path = os.getenv('INPUT_PATH') or workspace or '.'
+    path = os.getenv('INPUT_PATH') or workspace
     repo = os.getenv('GITHUB_REPOSITORY')
     check_run = GitHubCheckRun(github_token, repo, sha, workspace=workspace, path=path)
 
@@ -42,7 +47,7 @@ def run_check() -> None:
     if not formatter.violations_seen:
         summary = '*No violations*'
     else:
-        summary = '*Violations were found*\n'
+        summary = '*Violations were found*'
 
     check_run.complete(formatter, summary=summary)
 
