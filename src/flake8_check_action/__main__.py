@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 def run_check() -> None:
     default_select = 'F'
-    default_select = 'E,F'
     github_token = os.getenv('GITHUB_TOKEN')
     if not github_token:
         logging.basicConfig(level=logging.INFO)
