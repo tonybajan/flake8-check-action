@@ -28,13 +28,18 @@ class GitHubCheckRun(object):
             'name': 'Flake8 checks',
             'head_sha': self.sha,
             'status': 'in_progress',
-            'started_at': datetime.utcnow().isoformat(),
+            'started_at': datetime.utcnow().isoformat(timespec='seconds') + 'Z',
+            'output': {
+                'title': 'Flake8 checks',
+                'summary': '',
+            }
         }
 
         url = f'https://api.github.com/repos/{self.repo}/check-runs'
         logger.info('Create check run: %s', check_run)
         if self.token:
             response = self.session.post(url, data=json.dumps(check_run))
+            logger.info('GitHub Response: %s', response.content)
             response.raise_for_status()
             response_data = response.json()
             self.check_run_url = f'{url}/{response_data["id"]}'
@@ -62,18 +67,22 @@ class GitHubCheckRun(object):
 
         logger.info('Update check run: %s', check_data)
         if self.token:
-            self.session.patch(self.check_run_url, data=json.dumps(check_data))
+            response = self.session.patch(self.check_run_url, data=json.dumps(check_data))
+            response = logger.info('GitHub Response: %s', response.content)
+            response.raise_for_status()
 
     def complete(self, formatter: GitHubCheckFormatter, summary: str):
         check_data = {
             'output': {
                 'summary': summary,
                 'annotations': self._format_annotations(formatter),
-                'completed_at': datetime.utcnow().isoformat(),
+                'completed_at': datetime.utcnow().isoformat(timespec='seconds') + 'Z',
                 'conclusion': 'failure' if formatter.violations_seen else 'success'
             }
         }
 
         logger.info('Update check run: %s', check_data)
         if self.token:
-            self.session.patch(self.check_run_url, data=json.dumps(check_data))
+            response = self.session.patch(self.check_run_url, data=json.dumps(check_data))
+            response = logger.info('GitHub Response: %s', response.content)
+            response.raise_for_status()
