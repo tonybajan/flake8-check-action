@@ -16,9 +16,10 @@ def run_check() -> None:
         logger.warning('No GitHub token found, check will not be reported')
 
     sha = os.getenv('GITHUB_SHA')
-    path = os.getenv('INPUT_PATH') or os.getenv('GITHUB_WORKSPACE') or '.'
+    workspace = os.getenv('GITHUB_WORKSPACE')
+    path = os.getenv('INPUT_PATH') or workspace or '.'
     repo = os.getenv('GITHUB_REPOSITORY')
-    check_run = GitHubCheckRun(github_token, repo, sha, path)
+    check_run = GitHubCheckRun(github_token, repo, sha, workspace=workspace, path=path)
 
     select = parse_comma_separated_list(os.getenv('INPUT_SELECT', default_select))
     ignore = parse_comma_separated_list(os.getenv('INPUT_IGNORE', ''))
@@ -36,14 +37,12 @@ def run_check() -> None:
     )
     formatter = style_guide._application.formatter
     formatter.check_run = check_run
-    report = style_guide.check_files(paths=[path])
+    style_guide.check_files(paths=[path])
 
     if not formatter.violations_seen:
         summary = '*No violations*'
     else:
         summary = '*Violations were found*\n'
-        for stat in report.get_statistics(''):
-            summary += f'* {stat}\n'
 
     check_run.complete(formatter, summary=summary)
 
