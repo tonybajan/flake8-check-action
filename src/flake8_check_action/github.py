@@ -1,6 +1,7 @@
 import json
 import logging
 from datetime import datetime
+from pathlib import Path
 
 import requests
 
@@ -11,11 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 class GitHubCheckRun(object):
-    def __init__(self, token: str, repo: str, sha: str, path: str):
+    def __init__(self, token: str, repo: str, sha: str, workspace: str, path: str):
         self.token = token
 
         self.repo = repo
         self.sha = sha
+        self.workspace = workspace
         self.path = path
 
         self.session = requests.sessions.Session()
@@ -47,8 +49,11 @@ class GitHubCheckRun(object):
     def _format_annotations(self, formatter):
         annotations = []
         for violation in formatter.violations_outstanding:
+            filename = Path(violation.filename)
+            if filename.is_absolute():
+                filename = filename.relative_to(self.workspace)
             annotations.append({
-                'path': violation.filename,
+                'path': str(filename),
                 'start_line': violation.line_number,
                 'end_line': violation.line_number,
                 'start_column': violation.column_number,

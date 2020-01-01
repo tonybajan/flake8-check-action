@@ -16,9 +16,10 @@ def run_check() -> None:
         logger.warning('No GitHub token found, check will not be reported')
 
     sha = os.getenv('GITHUB_SHA')
-    path = os.getenv('INPUT_PATH') or os.getenv('GITHUB_WORKSPACE') or '.'
+    workspace = os.getenv('GITHUB_WORKSPACE')
+    path = os.getenv('INPUT_PATH') or workspace or '.'
     repo = os.getenv('GITHUB_REPOSITORY')
-    check_run = GitHubCheckRun(github_token, repo, sha, path)
+    check_run = GitHubCheckRun(github_token, repo, sha, workspace=workspace, path=path)
 
     select = parse_comma_separated_list(os.getenv('INPUT_SELECT', default_select))
     ignore = parse_comma_separated_list(os.getenv('INPUT_IGNORE', ''))
