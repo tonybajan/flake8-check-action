@@ -12,3 +12,4 @@ jobs:
         select: E,F,B,G0
         maxlinelength: 79
         repotoken: ${{ secrets.GITHUB_TOKEN }}
+        path: 'src/flake8_check_action'
