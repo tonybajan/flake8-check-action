@@ -46,12 +46,16 @@ def run_check() -> None:
 
     if not formatter.violations_seen:
         summary = '*No violations*'
+        exit_code = 0
     else:
         summary = '*Violations were found*'
+        exit_code = 1
 
     check_run.complete(formatter, summary=summary)
+    return exit_code
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.WARNING)
-    run_check()
+    exit_code = run_check()
+    sys.exit(exit_code)
