@@ -4,12 +4,15 @@ from flake8.formatting.default import Default
 from flake8.style_guide import Violation
 
 
+
+
+
 class GitHubCheckFormatter(Default):
     def after_init(self) -> None:
+        import pdb; pdb.set_trace()
         self.check_run = None
         self.violations_seen = False
         self.violations_outstanding = []
-
     def format(self, error: Violation) -> Optional[str]:
         self.violations_seen = True
         self.violations_outstanding.append(error)
