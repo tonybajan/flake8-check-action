@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: tonybajan/flake8-check-action@v1.0.0
+    - uses: tonybajan/flake8-check-action@v1.3.0
       with:
         select: E3,E4,E5,E7,W6,F,B,G0
         maxlinelength: 100
