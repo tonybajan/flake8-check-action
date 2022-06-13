@@ -10,7 +10,7 @@ from .github import GitHubCheckRun
 logger = logging.getLogger(__name__)
 
 
-def run_check() -> None:
+def run_check() -> int:
     default_select = 'F'
     github_token = os.getenv('INPUT_REPOTOKEN')
     if not github_token:
@@ -20,10 +20,10 @@ def run_check() -> None:
         )
         sys.exit(1)
 
-    sha = os.getenv('GITHUB_SHA')
-    workspace = os.getenv('GITHUB_WORKSPACE')
-    path = os.getenv('INPUT_PATH') or workspace
-    repo = os.getenv('GITHUB_REPOSITORY')
+    repo = os.environ['GITHUB_REPOSITORY']
+    sha = os.environ['GITHUB_SHA']
+    workspace = os.environ['GITHUB_WORKSPACE']
+    path = os.environ.get('INPUT_PATH') or workspace
     check_run = GitHubCheckRun(github_token, repo, sha, workspace=workspace, path=path)
 
     select = parse_comma_separated_list(os.getenv('INPUT_SELECT', default_select))
