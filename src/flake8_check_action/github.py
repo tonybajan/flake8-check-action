@@ -80,6 +80,8 @@ class GitHubCheckRun:
     def send_outstanding_annotations(self, formatter: GitHubCheckFormatter) -> None:
         check_data = {
             'output': {
+                'title': 'Flake8 violations',
+                'summary': 'Linting in progress',
                 'annotations': self._format_annotations(formatter)
             }
         }
