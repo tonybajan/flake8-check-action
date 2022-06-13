@@ -1,7 +1,8 @@
 import json
-from unittest.mock import patch, ANY
+from unittest.mock import patch, ANY, MagicMock
 
 import pytest
+
 from flake8_check_action.__main__ import run_check
 
 
@@ -39,6 +40,16 @@ def test_main():
     assert data['status'] == 'completed'
     assert data['output']['summary'] == '*Violations were found*'
     assert len(data['output']['annotations']) == 4
+
+
+def test_api_forbidden(monkeypatch):
+    monkeypatch.setenv('INPUT_SELECT', 'E,F')
+
+    with patch('flake8_check_action.github.requests.sessions.Session') as mock_session:
+        mock_session.return_value.post.return_value = MagicMock(status_code=403)
+        assert run_check() == 1
+
+    assert mock_session.return_value.patch.call_count == 0
 
 
 def test_incremental_annotations(monkeypatch):
