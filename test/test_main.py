@@ -11,6 +11,7 @@ def environment(monkeypatch):
     monkeypatch.setenv('INPUT_PATH', 'test')
     monkeypatch.setenv('GITHUB_SHA', 'abcde')
     monkeypatch.setenv('GITHUB_REPOSITORY', 'tonybajan/flake8-check-action')
+    monkeypatch.setenv('GITHUB_WORKSPACE', '')
 
 
 def test_main():

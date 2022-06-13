@@ -2,6 +2,7 @@ import json
 import logging
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 import requests
 
@@ -11,7 +12,7 @@ from .formatter import GitHubCheckFormatter
 logger = logging.getLogger(__name__)
 
 
-class GitHubCheckRun(object):
+class GitHubCheckRun:
     def __init__(self, token: str, repo: str, sha: str, workspace: str, path: str):
         self.token = token
 
@@ -46,7 +47,7 @@ class GitHubCheckRun(object):
             response_data = response.json()
             self.check_run_url = f'{url}/{response_data["id"]}'
 
-    def _format_annotations(self, formatter):
+    def _format_annotations(self, formatter: GitHubCheckFormatter) -> list[dict[str, Any]]:
         annotations = []
         for violation in formatter.violations_outstanding:
             filename = Path(violation.filename)
@@ -64,7 +65,7 @@ class GitHubCheckRun(object):
             })
         return annotations
 
-    def send_outstanding_annotations(self, formatter: GitHubCheckFormatter):
+    def send_outstanding_annotations(self, formatter: GitHubCheckFormatter) -> None:
         check_data = {
             'output': {
                 'annotations': self._format_annotations(formatter)
@@ -77,7 +78,7 @@ class GitHubCheckRun(object):
             logger.info('GitHub Response: %s', response.content)
             response.raise_for_status()
 
-    def complete(self, formatter: GitHubCheckFormatter, summary: str):
+    def complete(self, formatter: GitHubCheckFormatter, summary: str) -> None:
         check_data = {
             'output': {
                 'title': 'Flake8 violations',
