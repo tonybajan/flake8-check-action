@@ -87,8 +87,12 @@ class GitHubCheckRun:
         logger.info('Update check run: %s', check_data)
         if self.check_run_url:
             response = self.session.patch(self.check_run_url, data=json.dumps(check_data))
-            logger.info('GitHub Response: %s', response.content)
-            response.raise_for_status()
+            if response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY:
+                logger.error('Submitted violations %s', check_data)
+                logger.error('GitHub Response: %s', response.content)
+            else:
+                logger.info('GitHub Response: %s', response.content)
+                response.raise_for_status()
 
     def complete(self, formatter: GitHubCheckFormatter, summary: str) -> None:
         check_data = {
