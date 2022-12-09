@@ -6,3 +6,4 @@ flake8-plugin-utils
 isort
 pytest
 requests
+wheel
