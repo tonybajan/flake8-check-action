@@ -1,4 +1,4 @@
-FROM python:3.10-alpine
+FROM python:3.11-slim-bullseye
 
 WORKDIR /srv/flake8-check-action
 COPY requirements.txt .
